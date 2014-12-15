@@ -1,0 +1,21 @@
+<div>
+  <h2>model</h2>
+</div>
+
+<div>defined_str: <span>{{defined_str}}</span></div>
+<div>undefined_str: <span>{{undefined_str}}</span></div>
+
+<div>defined_obj.str: <span>{{defined_obj.str}}</span></div>
+<div>defined_obj.undefined_obj.str: <span>{{defined_obj.undefined_obj.str}}</span></div>
+
+<div>undefined_obj.str: <span>{{undefined_obj.str}}</span></div>
+<div>undefined_obj.undefined_obj.str: <span>{{undefined_obj.undefined_obj.str}}</span></div>
+
+<div>defined_single_dimension_arr: <span>{{#each defined_single_dimension_arr}}
+  {{this}}
+{{/each}}</span></div>
+<div>undefined_single_dimension_arr: <span>{{#each undefined_single_dimension_arr}}
+  {{this}}
+{{/each}}</span></div>
+
+<pre>{{json this}}</pre>

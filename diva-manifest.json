@@ -1,0 +1,12 @@
+{
+    "environments": {
+        "mobile": {
+            "development": "",
+            "staging": ""
+        },
+        "desktop": {
+            "development": "1234567890123",
+            "staging": ""
+        }
+    }
+}

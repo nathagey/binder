@@ -1,0 +1,15 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\000031}}
+div {
+  width: 300px;
+  position: relative;
+  border-bottom: 1px solid #f00;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\000039}}
+span {
+  text-align: right;
+  position: absolute;
+  right: 0;
+}

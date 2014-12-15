@@ -1,0 +1,30 @@
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss;
+  }
+
+  line {
+    font-family: \000031;
+  }
+}
+
+div {
+  width: 300px;
+  position: relative;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss;
+  }
+
+  line {
+    font-family: \000036;
+  }
+}
+
+span {
+  text-align: right;
+  position: absolute;
+  right: 0;
+}
