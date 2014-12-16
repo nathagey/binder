@@ -9,6 +9,29 @@ UU.addModule("binding", function (UU) {
   template = Handlebars.templates.main;
   domScope = "#content";
 
+  // bind input events...
+  function _uid () {
+    return performance.now().toString().replace(".", "");
+  }
+
+  Handlebars.registerHelper('bind', function(context, options) {
+    
+    var id = _uid();
+    var changeEvent = "change";
+    var value = context[options.hash.value] || "";
+
+    if (options.hash.on) {
+      changeEvent = options.hash.on;
+    }
+
+    $(document).on(changeEvent, "[data-binding='"+id+"']", function () {
+      context[options.hash.value] = $(this).val();
+    });
+    
+
+    return "data-binding='"+id+"' value='"+value+"'";
+  });
+
   function _isObjectLiteral (prop) {
     return typeof prop === "object" && !_isArray(prop);
   }

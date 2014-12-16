@@ -8,7 +8,8 @@ div {
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\000039}}
-span {
+span,
+input {
   text-align: right;
   position: absolute;
   right: 0;

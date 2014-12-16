@@ -427,5 +427,5 @@ module.exports = function(grunt) {
     });
     grunt.registerTask('build', ['clean:dist', 'useminPrepare', 'concurrent:dist', 'autoprefixer', 'concat', 'cssmin', 'uglify', 'copy:dist', 'rev', 'usemin', 'htmlmin', 'divafy']);
     grunt.registerTask('build:dev', ['clean:dist', 'useminPrepare', 'compass', 'copy:styles', 'autoprefixer', 'concat', 'copy:dist', 'copy:dev', 'rev', 'usemin', 'divafy']);
-    grunt.registerTask('default', ['newer:jshint', 'test', 'build']);
+    grunt.registerTask('default', ['test', 'build']);
 };
