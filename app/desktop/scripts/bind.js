@@ -12,9 +12,7 @@ UU.addModule("binding", function (UU) {
   // end parameters
 
   var boundDomChanging = false;
-  var bound = {
-    "any-change-to-model": []
-  };
+  var bound = [];
 
   // bind input events...
   function _uid () {
@@ -25,12 +23,13 @@ UU.addModule("binding", function (UU) {
     // bound without context means bind to all?
     if (!options) {
       var morph = Metamorph(context.fn(model));
-      bound["any-change-to-model"].push({
+      bound.push({
         fn: context.fn,
         morph: morph
       });
       return morph.outerHTML();
     }
+    console.error("The 'bound' helper was passed parameters.");
     // An undefined needs in the dom is essentailly an empty string.
     // This is done so that when an undefined value becomes defined,
     // there is a placeholder in the dom that gets the new defined value.
@@ -71,7 +70,7 @@ UU.addModule("binding", function (UU) {
         }
       });
       // update elements bound to the entire model
-      bound["any-change-to-model"].forEach(function (element, index, array) {
+      bound.forEach(function (element, index, array) {
         array[index].morph.html(array[index].fn(model));
       });
       var t1 = performance.now();
@@ -126,6 +125,7 @@ UU.addModule("binding", function (UU) {
   
   function updateView(model) {
     var t0 = performance.now();
+    bound = [];
     $(domScope).html(template(model));
     var t1 = performance.now();
     console.log("dom update took " + (t1 - t0) + " milliseconds.");
