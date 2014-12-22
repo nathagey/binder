@@ -1,5 +1,5 @@
 div {
-  width: 300px;
+  min-width: 1100px;
   position: relative;
   border-bottom: 1px solid #f00;
   padding-bottom: 3px;
@@ -8,7 +8,13 @@ div {
 
 span,
 input {
-  text-align: right;
   position: absolute;
-  right: 0;
+  left: 260px;
+}
+
+pre.example {
+  margin: 0;
+  top: 0;
+  position: absolute;
+  left: 400px;
 }

@@ -1,35 +1,84 @@
 UU.addModule("binding", function (UU) {
 
-  Handlebars.registerHelper('json', function(obj) {
-    return JSON.stringify(obj, null, 4);
+  Handlebars.registerHelper('json', function(json, options) {
+    return JSON.stringify(json, null, 4);
   });
 
   // START Module API code
+  // start parameters
   model = UU.getPageData("model");
   template = Handlebars.templates.main;
   domScope = "#content";
+  // end parameters
+
+  var boundDomChanging = false;
+  var bound = {
+    "any-change-to-model": []
+  };
 
   // bind input events...
   function _uid () {
     return performance.now().toString().replace(".", "");
   }
 
-  Handlebars.registerHelper('bind', function(context, options) {
+  Handlebars.registerHelper('bound', function (context, options) {
+    // bound without context means bind to all?
+    if (!options) {
+      var morph = Metamorph(context.fn(model));
+      bound["any-change-to-model"].push({
+        fn: context.fn,
+        morph: morph
+      });
+      return morph.outerHTML();
+    }
+    // An undefined needs in the dom is essentailly an empty string.
+    // This is done so that when an undefined value becomes defined,
+    // there is a placeholder in the dom that gets the new defined value.
+    var value = context[options.hash.value] || "";
+    var key = options.hash.value;
+
+    // create a new morph
+    bound[key] = Metamorph(value);
+
+    // return the value to the DOM
+    return bound[key].outerHTML();
+  });
+
+  Handlebars.registerHelper('bind-attr', function(context, options) {
     
     var id = _uid();
     var changeEvent = "change";
-    var value = context[options.hash.value] || "";
+    var key = options.hash.value;
+    var value = context[key] || "";
 
     if (options.hash.on) {
       changeEvent = options.hash.on;
     }
 
     $(document).on(changeEvent, "[data-binding='"+id+"']", function () {
-      context[options.hash.value] = $(this).val();
+      var t0 = performance.now();
+      boundDomChanging = true;
+      var newValue = $(this).val();
+      var that = this;
+      // update an individual dom reference via morph
+      // {{#bound this value="defined_str"}}{{/bound}}
+      // bound[key].html(newValue);
+      // update the model
+      context[key] = newValue;
+      $("[data-bound-to='"+key+"']").each(function () {
+        if (this !== that) {
+          $(this).val(newValue);
+        }
+      });
+      // update elements bound to the entire model
+      bound["any-change-to-model"].forEach(function (element, index, array) {
+        array[index].morph.html(array[index].fn(model));
+      });
+      var t1 = performance.now();
+      console.log("change event took " + (t1 - t0) + " milliseconds.");
     });
     
-
-    return "data-binding='"+id+"' value='"+value+"'";
+    return "data-bound-to='"+key+"' data-binding='"+id+"' value='"+value+"'";
   });
 
   function _isObjectLiteral (prop) {
@@ -51,6 +100,12 @@ UU.addModule("binding", function (UU) {
     var scope = prop || model;
     Object.observe(scope, function(changes) {
       changes.forEach(function(change) {
+        // boundDomChanging means that we want to stop doing an updateView
+        // in favor of allowing the change event to update the bound[key]
+        if (boundDomChanging) {
+          boundDomChanging = false;
+          return false;
+        }
         if (_isArray(scope) && change.type === "update"
               && change.name === "length") {
           // arrays seem to trigger an update on the length
@@ -73,7 +128,7 @@ UU.addModule("binding", function (UU) {
     var t0 = performance.now();
     $(domScope).html(template(model));
     var t1 = performance.now();
-    console.log("dom update took " + (t1 - t0) + " milliseconds.")
+    console.log("dom update took " + (t1 - t0) + " milliseconds.");
   }
 
   function bind (model) {
