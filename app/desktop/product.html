@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html class="" lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/WebPage" data-asset-build="" data-asset-server="dm-newdiva.lbidts.com" data-device-size="medium">
+  <head>
+    <meta charset="utf-8">
+    <title>Victoria's Secret: bind</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <!-- build:css(.tmp) styles/bind.css -->
+    <link rel="stylesheet" href="styles/bind.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+<section id="content" itemprop="mainContentOfPage">
+  <!-- CONTENT START -->
+  <!-- CONTENT END -->
+</section>
+
+    <script src="scripts/global.js"></script>
+    <!-- build:js scripts/bind.js -->
+    <script src="scripts/metamorph.js"></script>
+    <script src="templates/compiled.js"></script>
+    <script src="scripts/bind.js"></script>
+    <script src="scripts/product.js"></script>
+    <!-- endbuild -->
+    <script>
+    window.template = "product";
+    Handlebars.registerPartial("size", Handlebars.templates.size);
+    Handlebars.registerPartial("color", Handlebars.templates.color);
+    Handlebars.registerPartial("distinct", Handlebars.templates.distinct);
+    UU.setPageData("model", {
+      products: [
+        {
+          color: [
+            {key: "BR2", image: "https://dm.victoriassecret.com/product/swatch/125x125/V869925_BR2.jpg"},
+            {key: "3UM", image: "https://dm.victoriassecret.com/product/swatch/125x125/V870034_3UM.jpg"},
+            {key: "Q10", image: "https://dm.victoriassecret.com/product/swatch/125x125/V867541_Q10.jpg"}
+          ], 
+          size: [
+            {key: "S", value: "S"},
+            {key: "M", value: "M"},
+            {key: "L", value: "L"}
+          ]
+        }
+      ],
+      inventory: [
+        ["BR2", "S", "D"],
+        ["ALL", "L", "B"]
+      ]
+    });
+    </script>
+    <script src="scripts/specialLeftNav.js"></script>
+  </body>
+</html>

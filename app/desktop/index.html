@@ -14,9 +14,7 @@
 
 
 
-	<script>
-		var RP_MEDIA = '//RP_MEDIA';
-	</script>
+	
 	<!-- CONTENT END -->
 </section>
 		<script src="scripts/global.js"></script>
@@ -25,6 +23,16 @@
 		<script src="templates/compiled.js"></script>
 		<script src="scripts/bind.js"></script>
 		<!-- endbuild -->
-	<script src="scripts/specialLeftNav.js"></script>
+		<script>
+		window.template = "main";
+		UU.setPageData("model", {
+		  defined_str: "populated",
+		  defined_obj: {
+		    str: "populated"
+		  },
+		  defined_single_dimension_arr: [1,2,3]
+		});
+		</script>
+		<script src="scripts/specialLeftNav.js"></script>
 	</body>
 </html>

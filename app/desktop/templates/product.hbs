@@ -1,0 +1,37 @@
+{{#each products}}
+  <div class="product">
+    {{#if style}}
+    <h3>Style</h3>
+    <select>
+      {{#each style}}
+        {{> distinct this}}
+      {{/each}}
+    </select>
+    {{/if}}
+    {{#if distinct}}
+    <h3>Distinct</h3>
+    <select>
+      {{#each style}}
+        {{> distinct this}}
+      {{/each}}
+    </select>
+    {{/if}}
+    {{#if color}}
+    <h3>Color</h3>
+    <nav class="color">
+      {{#each color}}
+        {{> color this}}
+      {{/each}}
+    </nav>
+    {{/if}}
+    {{#if size}}
+    <h3>Size</h3>
+    <nav class="size">
+      {{#each size}}
+        {{> size this}}
+      {{/each}}
+    </nav>
+    {{/if}}
+    <h3>Qty</h3>
+  </div>
+{{/each}}

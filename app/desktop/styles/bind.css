@@ -21,3 +21,23 @@ pre.example {
   position: absolute;
   left: 400px;
 }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\0000322}}
+a {
+  display: inline-block;
+  border: 1px solid white;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\0000326}}
+a img {
+  display: block;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\0000330}}
+.selected {
+  border: 1px solid red;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/bethcurry\/Documents\/code\/bind\/app\/desktop\/styles\/bind\.scss}line{font-family:\0000334}}
+[data-atp="D"] {
+  display: none;
+}

@@ -7,12 +7,33 @@ UU.addModule("binding", function (UU) {
   // START Module API code
   // start parameters
   model = UU.getPageData("model");
-  template = Handlebars.templates.main;
+  template = Handlebars.templates[window.template];
   domScope = "#content";
   // end parameters
 
   var boundDomChanging = false;
   var bound = [];
+
+  function newBound (fn, scope) {
+    var morph = Metamorph(fn(scope));
+    bound.push({
+      fn: fn,
+      morph: morph,
+      scope: scope
+    });
+    return morph;
+  }
+
+  function updateAllBound () {
+    var t0 = performance.now();
+    var debugInfo = "";
+    bound.forEach(function (element, index, array) {
+      element.morph.html(element.fn(element.scope));
+      debugInfo = element.morph.innerHTML;
+    });
+    var t1 = performance.now();
+    console.log("bound update took " + (t1 - t0) + " milliseconds.", debugInfo);
+  }
 
   // bind input events...
   function _uid () {
@@ -20,27 +41,24 @@ UU.addModule("binding", function (UU) {
   }
 
   Handlebars.registerHelper('bound', function (context, options) {
-    // bound without context means bind to all?
-    if (!options) {
-      var morph = Metamorph(context.fn(model));
-      bound.push({
-        fn: context.fn,
-        morph: morph
-      });
-      return morph.outerHTML();
-    }
-    console.error("The 'bound' helper was passed parameters.");
-    // An undefined needs in the dom is essentailly an empty string.
-    // This is done so that when an undefined value becomes defined,
-    // there is a placeholder in the dom that gets the new defined value.
-    var value = context[options.hash.value] || "";
-    var key = options.hash.value;
+    var scope = options ? context : context;
+    var data = options || context;
+    var morph = newBound(data.fn, scope);
 
-    // create a new morph
-    bound[key] = Metamorph(value);
+    return morph.outerHTML();
 
-    // return the value to the DOM
-    return bound[key].outerHTML();
+    // console.error("The 'bound' helper was passed parameters.");
+    // // An undefined needs in the dom is essentailly an empty string.
+    // // This is done so that when an undefined value becomes defined,
+    // // there is a placeholder in the dom that gets the new defined value.
+    // var value = context[options.hash.value] || "";
+    // var key = options.hash.value;
+
+    // // create a new morph
+    // bound[key] = Metamorph(value);
+
+    // // return the value to the DOM
+    // return bound[key].outerHTML();
   });
 
   Handlebars.registerHelper('bind-attr', function(context, options) {
@@ -69,10 +87,7 @@ UU.addModule("binding", function (UU) {
           $(this).val(newValue);
         }
       });
-      // update elements bound to the entire model
-      bound.forEach(function (element, index, array) {
-        array[index].morph.html(array[index].fn(model));
-      });
+      updateAllBound();
       var t1 = performance.now();
       console.log("change event took " + (t1 - t0) + " milliseconds.");
     });
@@ -97,6 +112,7 @@ UU.addModule("binding", function (UU) {
 
   function _bindViewToModel (model, prop) {
     var scope = prop || model;
+    // console.log(":BOUND " + JSON.stringify(prop));
     Object.observe(scope, function(changes) {
       changes.forEach(function(change) {
         // boundDomChanging means that we want to stop doing an updateView
@@ -109,6 +125,8 @@ UU.addModule("binding", function (UU) {
               && change.name === "length") {
           // arrays seem to trigger an update on the length
           // along with the change
+        } else if (bound.length) {
+          updateAllBound();
         } else {
           updateView(model);
         }
@@ -131,11 +149,24 @@ UU.addModule("binding", function (UU) {
     console.log("dom update took " + (t1 - t0) + " milliseconds.");
   }
 
-  function bind (model) {
-    if (_isObjectLiteral(model)) {
-      for (var prop in model) {
-        if (typeof model[prop] === "object") {
-          _bindViewToModel(model, model[prop]);
+  function bind (root, prop) {
+    var scope = prop || root;
+    if (_isObjectLiteral(scope)) {
+      if (model !== scope) {
+        _bindViewToModel(model, scope);
+      }
+      for (var child in scope) {
+        if (_isObjectLiteral(scope[child])) {
+          console.log(":BIND " + child);
+          _bindViewToModel(scope, scope[child]);
+        } else if (_isArray(scope[child])) {
+          console.log(":BIND " + child);
+          _bindViewToModel(scope, scope[child]);
+          scope[child].forEach(function (element, index, array) {
+            if (typeof element === "object") {
+              bind(root, element);
+            }
+          });
         }
       }
     }
@@ -151,12 +182,4 @@ UU.addModule("binding", function (UU) {
       bind(UU.getPageData("model"));
     }
   };
-});
-
-UU.setPageData("model", {
-  defined_str: "populated",
-  defined_obj: {
-    str: "populated"
-  },
-  defined_single_dimension_arr: [1,2,3]
 });

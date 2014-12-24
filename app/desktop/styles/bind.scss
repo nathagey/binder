@@ -18,3 +18,17 @@ pre.example {
   position: absolute;
   left: 400px;
 }
+
+a {
+  display: inline-block;
+  border: 1px solid white;
+
+  img {
+    display: block;
+  }
+}
+.selected {
+  border: 1px solid red;
+}
+
+[data-atp="D"] {display: none;}
